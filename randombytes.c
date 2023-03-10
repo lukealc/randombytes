@@ -2,7 +2,9 @@
 // *before* randombytes.h is included. Otherwise SYS_getrandom will not be
 // declared.
 #if defined(__linux__) || defined(__GNU__)
+#ifndef _GNU_SOURCE
 # define _GNU_SOURCE
+#endif
 #endif /* defined(__linux__) || defined(__GNU__) */
 
 #include "randombytes.h"
@@ -332,7 +334,7 @@ int randombytes(void *buf, size_t n)
 	return randombytes_js_randombytes_nodejs(buf, n);
 #elif defined(__linux__) || defined(__GNU__) || defined(GNU_KFREEBSD)
 # if defined(USE_GLIBC)
-#  pragma message("Using getrandom function call")
+// #  pragma message("Using getrandom function call")
 	/* Use getrandom system call */
 	return randombytes_linux_randombytes_getrandom(buf, n);
 # elif defined(SYS_getrandom)
